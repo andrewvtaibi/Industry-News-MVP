@@ -1,1 +1,21 @@
+# Core RSS parsing (existing)
 feedparser==6.0.11
+
+# Web framework
+fastapi>=0.115.0
+
+# ASGI server
+uvicorn[standard]>=0.30.0
+
+# File upload support (multipart/form-data)
+python-multipart>=0.0.9
+
+# HTTP client for async testing
+httpx>=0.27.0
+
+# Rate limiting for FastAPI
+slowapi>=0.1.9
+
+# Test framework
+pytest>=8.0.0
+pytest-asyncio>=0.23.0

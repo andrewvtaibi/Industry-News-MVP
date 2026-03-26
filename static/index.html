@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline'
+        https://s3.tradingview.com
+        https://s.tradingview.com
+        https://widget.tradingview.com;
+      frame-src 'self'
+        https://www.tradingview.com
+        https://s3.tradingview.com
+        https://s.tradingview.com;
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: https:;
+      connect-src 'self';
+    "
+  >
+  <title>Company Reports and Information Engine</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- ========== Sidebar ========== -->
+  <aside class="sidebar">
+    <div class="sidebar-title">
+      Company reports and information engine
+    </div>
+    <nav class="sidebar-nav">
+      <a href="https://buymeacoffee.com" target="_blank" rel="noopener noreferrer">
+        Support Us!
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ========== Main content ========== -->
+  <main class="main">
+
+    <!-- ---- Top bar ---- -->
+    <div class="top-bar">
+
+      <!-- Left: search + toggle controls -->
+      <div class="search-section">
+
+        <!-- Search bar -->
+        <div class="search-bar">
+          <!-- Pencil / magnifier icon -->
+          <svg
+            width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            id="search-input"
+            type="text"
+            placeholder="search company names or ticker symbols here…."
+            maxlength="100"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            aria-label="Search company names or ticker symbols"
+          >
+          <button id="search-btn" type="button" aria-label="Search">Search</button>
+        </div>
+
+        <!-- Controls row: timeframe + content type -->
+        <div class="controls-row">
+
+          <!-- Timeframe -->
+          <div class="btn-group" role="group" aria-label="Timeframe">
+            <button
+              class="toggle-btn timeframe-btn active"
+              data-days="7"
+              type="button"
+              aria-pressed="true"
+            >Past Week</button>
+            <button
+              class="toggle-btn timeframe-btn"
+              data-days="30"
+              type="button"
+              aria-pressed="false"
+            >Past Month</button>
+          </div>
+
+          <!-- Separator label -->
+          <span class="toggle-label">Select what you're looking for here:</span>
+
+          <!-- Content type -->
+          <div class="btn-group" role="group" aria-label="Content type">
+            <button
+              class="toggle-btn content-type-btn active"
+              data-type="headlines"
+              type="button"
+              aria-pressed="true"
+            >Headlines</button>
+            <button
+              class="toggle-btn content-type-btn"
+              data-type="press_releases"
+              type="button"
+              aria-pressed="false"
+            >Press releases</button>
+            <button
+              class="toggle-btn content-type-btn"
+              data-type="stock_price"
+              type="button"
+              aria-pressed="false"
+            >Stock price</button>
+          </div>
+
+        </div><!-- /.controls-row -->
+      </div><!-- /.search-section -->
+
+      <!-- Right: CSV upload card -->
+      <div class="csv-card" role="button" tabindex="0"
+           aria-label="Upload a CSV with company names or ticker symbols">
+        <p>Or upload a CSV with your company names or ticker symbols here</p>
+        <span class="csv-arrow">↓</span>
+        <p id="csv-filename" class="csv-filename"></p>
+        <input
+          id="csv-input"
+          type="file"
+          accept=".csv,text/csv"
+          aria-hidden="true"
+          tabindex="-1"
+        >
+        <button
+          id="csv-submit-btn"
+          class="csv-submit-btn"
+          type="button"
+        >Run batch search</button>
+      </div>
+
+    </div><!-- /.top-bar -->
+
+    <!-- ---- Status bar ---- -->
+    <div id="status-bar" class="status-bar" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <span id="status-msg">Loading…</span>
+    </div>
+
+    <!-- ---- Error banner ---- -->
+    <div id="error-banner" class="error-banner" role="alert"></div>
+
+    <!-- ---- No results message ---- -->
+    <p id="no-results" class="no-results">
+      No results found for that query and timeframe.
+    </p>
+
+    <!-- ---- Results ---- -->
+    <section
+      id="results-area"
+      class="results-area"
+      aria-label="Search results"
+    ></section>
+
+  </main><!-- /.main -->
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

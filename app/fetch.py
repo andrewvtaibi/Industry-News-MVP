@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import ssl, urllib.request, urllib.error, time, re, html, random
+import gzip, ssl, urllib.request, urllib.error, time, re, html, random
 from typing import Tuple, List, Dict, Any
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -75,11 +75,29 @@ def fetch_bytes(
             try:
                 data = resp.read() or b""
             finally:
-                # Ensure socket is closed even if read() raised
                 try:
                     resp.close()
                 except Exception:
                     pass
+
+            # Decompress gzip/deflate if the server honoured our
+            # Accept-Encoding header (Google News almost always does).
+            encoding = (resp.headers.get("Content-Encoding") or "").lower()
+            if encoding == "gzip" or data[:2] == b"\x1f\x8b":
+                try:
+                    data = gzip.decompress(data)
+                except Exception:
+                    pass
+            elif encoding == "deflate":
+                import zlib
+                try:
+                    data = zlib.decompress(data, -zlib.MAX_WBITS)
+                except Exception:
+                    try:
+                        data = zlib.decompress(data)
+                    except Exception:
+                        pass
+
             return data
 
         except HTTPError as e:

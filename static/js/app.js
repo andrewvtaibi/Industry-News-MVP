@@ -18,6 +18,19 @@
 'use strict';
 
 // ---------------------------------------------------------------------------
+// Widget configuration
+// ---------------------------------------------------------------------------
+
+// 420px × 2.5 = 1050px
+const STOCK_WIDGET_HEIGHT = 300;
+
+// Map the app timeframe to the nearest TradingView range token.
+// "5D" = 5 trading days ≈ 1 calendar week; "1M" = 1 month.
+function daysToTvRange(days) {
+  return days >= 30 ? '1M' : '5D';
+}
+
+// ---------------------------------------------------------------------------
 // State
 // ---------------------------------------------------------------------------
 
@@ -341,13 +354,15 @@ function renderStockWidget(data) {
       Stock chart: <span class="ticker-display">${escHtml(ticker)}</span>
       — ${name}
     </div>
-    <div class="tradingview-widget-container"
-         id="tv-widget-${escAttr(ticker)}"
-         style="height:420px;width:100%">
+    <div style="height:${STOCK_WIDGET_HEIGHT}px;width:100%">
+      <div class="tradingview-widget-container"
+           id="tv-widget-${escAttr(ticker)}"
+           style="height:100%;width:100%">
+      </div>
     </div>
   `;
   resultsArea.appendChild(wrap);
-  injectTradingViewWidget(ticker, `tv-widget-${ticker}`);
+  injectTradingViewWidget(ticker, `tv-widget-${ticker}`, state.days);
 }
 
 // Collapsible stock section for batch view
@@ -378,13 +393,17 @@ function makeStockSection(data) {
     const containerId = `tv-batch-${escAttr(ticker)}-${Date.now()}`;
     body.innerHTML = `
       <div style="padding:16px">
-        <div class="tradingview-widget-container"
-             id="${containerId}"
-             style="height:420px;width:100%"></div>
+        <div style="height:${STOCK_WIDGET_HEIGHT}px;width:100%">
+          <div class="tradingview-widget-container"
+               id="${containerId}"
+               style="height:100%;width:100%"></div>
+        </div>
       </div>
     `;
     // Defer widget injection until after DOM insertion
-    requestAnimationFrame(() => injectTradingViewWidget(ticker, containerId));
+    requestAnimationFrame(
+      () => injectTradingViewWidget(ticker, containerId, state.days)
+    );
   }
 
   wrap.appendChild(header);
@@ -396,7 +415,7 @@ function makeStockSection(data) {
 // TradingView widget injection
 // ---------------------------------------------------------------------------
 
-function injectTradingViewWidget(ticker, containerId) {
+function injectTradingViewWidget(ticker, containerId, days) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
@@ -418,6 +437,8 @@ function injectTradingViewWidget(ticker, containerId) {
     autosize: true,
     symbol: ticker,
     interval: 'D',
+    range: daysToTvRange(days || state.days),
+    withdateranges: true,
     timezone: 'Etc/UTC',
     theme: 'light',
     style: '1',

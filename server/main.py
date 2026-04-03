@@ -55,6 +55,7 @@ _CSP = (
     f"script-src 'self' 'unsafe-inline' {_TRADINGVIEW_CSP}; "
     "frame-src 'self' "
     "https://www.tradingview.com "
+    "https://www.tradingview-widget.com "
     "https://s3.tradingview.com "
     "https://s.tradingview.com; "
     "style-src 'self' 'unsafe-inline'; "

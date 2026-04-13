@@ -2,46 +2,30 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "BioNews: Reset seen (Terminal, known-good)",
+      "name": "BioNews: Run server (uvicorn)",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/main.py",
+      "module": "uvicorn",
+      "args": [
+        "server.main:app",
+        "--host", "127.0.0.1",
+        "--port", "8000"
+      ],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "env": {
-        "BIONEWS_OUTPUTS": "csv,json,html",
-        "BIONEWS_WINDOW_DAYS": "7",
-        "BIONEWS_ONLY_NEW": "0",
-        "BIONEWS_RESET_SEEN": "1"
-      }
+        "CACHE_TTL_SECONDS": "900"
+      },
+      "jinja": true
     },
     {
-      "name": "BioNews: 7 days (only-new) (Terminal)",
+      "name": "BioNews: Run tests (pytest)",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/main.py",
+      "module": "pytest",
+      "args": ["tests/", "-v"],
       "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "env": {
-        "BIONEWS_OUTPUTS": "csv,json,html",
-        "BIONEWS_WINDOW_DAYS": "7",
-        "BIONEWS_ONLY_NEW": "1",
-        "BIONEWS_RESET_SEEN": "0"
-      }
-    },
-    {
-      "name": "BioNews: Today (CSV+JSON) (Terminal)",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/main.py",
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "env": {
-        "BIONEWS_OUTPUTS": "csv,json",
-        "BIONEWS_WINDOW_DAYS": "1",
-        "BIONEWS_ONLY_NEW": "0",
-        "BIONEWS_RESET_SEEN": "0"
-      }
+      "console": "integratedTerminal"
     }
   ]
 }

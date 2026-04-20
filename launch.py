@@ -51,13 +51,28 @@ log = logging.getLogger("launcher")
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-HOST      = "127.0.0.1"
-PORT      = 8000
-URL       = f"http://localhost:{PORT}"
-HEALTH    = f"http://{HOST}:{PORT}/api/health"
-VENV_PY   = PROJECT_ROOT / ".venv" / "Scripts" / "python.exe"
-MAX_WAIT  = 30   # seconds to wait for server to be ready
-POLL_INT  = 0.5  # seconds between health-check polls
+HOST     = "127.0.0.1"
+PORT     = 8000
+URL      = f"http://localhost:{PORT}"
+HEALTH   = f"http://{HOST}:{PORT}/api/health"
+MAX_WAIT = 30   # seconds to wait for server to be ready
+POLL_INT = 0.5  # seconds between health-check polls
+
+# Venv layout differs by OS:
+#   Windows  ->  .venv/Scripts/python.exe
+#   Mac/Linux -> .venv/bin/python3
+if sys.platform == "win32":
+    VENV_PY = PROJECT_ROOT / ".venv" / "Scripts" / "python.exe"
+    _SETUP_HINT = (
+        "    python -m venv .venv\n"
+        "    .venv\\Scripts\\python.exe -m pip install -r requirements.txt"
+    )
+else:
+    VENV_PY = PROJECT_ROOT / ".venv" / "bin" / "python3"
+    _SETUP_HINT = (
+        "    python3 -m venv .venv\n"
+        "    .venv/bin/pip install -r requirements.txt"
+    )
 
 
 def _find_python() -> Path:
@@ -69,10 +84,9 @@ def _find_python() -> Path:
         return VENV_PY
     log.error(
         "Virtual environment not found at: %s\n"
-        "Please run the following command once in a terminal:\n"
-        "    python -m venv .venv\n"
-        "    .venv\\Scripts\\python.exe -m pip install -r requirements.txt",
+        "Please run the following commands once in a terminal:\n%s",
         VENV_PY,
+        _SETUP_HINT,
     )
     input("\nPress Enter to close...")
     sys.exit(1)

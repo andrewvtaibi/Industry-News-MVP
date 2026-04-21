@@ -1,0 +1,135 @@
+# .github/workflows/build-release.yml
+#
+# Automatically builds the Windows installer and macOS DMG whenever you
+# push a version tag (e.g. v1.0.1) and attaches both files to the
+# GitHub Release.
+#
+# How to trigger a release:
+#   git tag v1.0.1
+#   git push origin v1.0.1
+#
+# GitHub then:
+#   1. Creates a Release named "Industry News v1.0.1"
+#   2. Builds IndustryNews-Setup.exe on a Windows cloud machine
+#   3. Builds IndustryNews.dmg on a macOS cloud machine
+#   4. Attaches both files to the release for users to download
+#
+# No Mac hardware needed — GitHub provides free macOS runners.
+
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+# Needed so the jobs can create and upload GitHub Release assets
+permissions:
+  contents: write
+
+# ---------------------------------------------------------------------------
+# WINDOWS — PyInstaller bundle + Inno Setup installer
+# ---------------------------------------------------------------------------
+jobs:
+  build-windows:
+    name: Windows installer
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Bundle app with PyInstaller
+        run: pyinstaller industry_news.spec
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Build Windows installer (.exe)
+        # Strip the leading 'v' from the tag so the version reads
+        # "1.0.1" rather than "v1.0.1" inside the installer UI.
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\iscc.exe" `
+            "/DAppVersion=$version" `
+            "installer\industry_news.iss"
+
+      - name: Rename installer with version
+        run: |
+          $version = "${{ github.ref_name }}"
+          Rename-Item `
+            "installer\Output\IndustryNews-Setup.exe" `
+            "IndustryNews-Setup-$version.exe"
+          Move-Item `
+            "IndustryNews-Setup-$version.exe" `
+            "installer\Output\"
+
+      - name: Upload Windows installer to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Industry News ${{ github.ref_name }}"
+          generate_release_notes: true
+          files: |
+            installer/Output/IndustryNews-Setup-${{ github.ref_name }}.exe
+
+# ---------------------------------------------------------------------------
+# MACOS — PyInstaller .app bundle + create-dmg disk image
+# ---------------------------------------------------------------------------
+  build-macos:
+    name: macOS disk image
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Bundle app with PyInstaller
+        run: pyinstaller industry_news_mac.spec
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Build macOS disk image (.dmg)
+        run: |
+          create-dmg \
+            --volname "Industry News" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "IndustryNews.app" 175 190 \
+            --hide-extension "IndustryNews.app" \
+            --app-drop-link 425 185 \
+            "IndustryNews-${{ github.ref_name }}.dmg" \
+            "dist/IndustryNews.app"
+
+      - name: Upload macOS DMG to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Industry News ${{ github.ref_name }}"
+          generate_release_notes: true
+          files: |
+            IndustryNews-${{ github.ref_name }}.dmg

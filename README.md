@@ -1,37 +1,51 @@
 # Industry News — Company Reports and Information Engine
 
-A lightweight tool for searching companies or ticker symbols and
-retrieving headlines, press releases, and interactive stock charts.
+Search any company or stock ticker and instantly get recent
+headlines, official press releases, and an interactive stock
+chart — all in one place, free.
 
 ---
 
-## Quick Start (End User)
+## Download and Install
+
+> **No coding or technical setup required.**
+> Download one file, double-click it, and the app opens in
+> your browser.
 
 ### Windows
 
-**One step:**
+1. Go to the
+   [**Releases page**](../../releases/latest)
+   of this repository.
+2. Under **Assets**, download **`IndustryNews-Setup-vX.X.X.exe`**.
+3. Double-click the downloaded file and follow the installer
+   (Next → Next → Install).
+4. The app opens in your browser automatically when installation
+   finishes. A desktop shortcut is created for future use.
 
-> Double-click **`Launch Industry News.bat`** in Windows Explorer.
+> **"Windows protected your PC" warning?**
+> This appears for any app that isn't commercially signed.
+> Click **More info** → **Run anyway**. The app is safe.
 
-The browser opens automatically to `http://localhost:8000`.
-Keep the black window open while you use the app — closing it
-stops the server.
+---
 
 ### Mac
 
-**One step:**
+1. Go to the
+   [**Releases page**](../../releases/latest)
+   of this repository.
+2. Under **Assets**, download **`IndustryNews-vX.X.X.dmg`**.
+3. Double-click the downloaded `.dmg` file.
+4. In the window that opens, drag **Industry News** into the
+   **Applications** folder.
+5. Open **Launchpad** or your **Applications** folder and
+   double-click **Industry News**.
 
-> Double-click **`launch_macos.sh`** in Finder.
-
-If double-clicking does nothing, right-click the file →
-**Open With → Terminal**.
-
-The browser opens automatically to `http://localhost:8000`.
-Keep the Terminal window open while you use the app — closing
-it stops the server.
-
-> **First time on Mac?** See [Mac First-Time Setup](#mac-first-time-setup)
-> below before running the script.
+> **"Cannot be opened because Apple cannot verify it" warning?**
+> This is normal for apps that aren't sold through the App Store.
+> **Right-click** (or Control+click) the app icon →
+> click **Open** → click **Open** again.
+> You only need to do this once.
 
 ---
 
@@ -39,144 +53,120 @@ it stops the server.
 
 | Feature | How to use it |
 |---|---|
-| Search by company name | Type "Pfizer" in the search bar, press Enter |
-| Search by ticker symbol | Type "PFE" in the search bar, press Enter |
-| Batch search | Upload a CSV file (company names or tickers, one per row) |
-| Switch timeframe | Click **Past Week** (7 days) or **Past Month** (30 days) |
+| Search by company name | Type `Pfizer` in the search bar, press Enter |
+| Search by ticker symbol | Type `PFE` in the search bar, press Enter |
+| Switch timeframe | Click **Past Week** or **Past Month** |
 | Switch content type | Click **Headlines**, **Press releases**, or **Stock price** |
+| Batch search | Upload a CSV file with one company or ticker per row |
 
 ### Headlines
-Recent news articles about the company, sourced from Google News.
+Recent news articles sourced from Google News.
 Each result links to the original article.
 
 ### Press Releases
-Company-issued statements from PR Newswire, GlobeNewswire, and
-BusinessWire only. No third-party editorial content.
+Official company statements from PR Newswire, GlobeNewswire,
+and BusinessWire only — no third-party editorial content.
 
 ### Stock Price
-An interactive TradingView chart for the resolved ticker symbol.
-If a ticker cannot be resolved, a clear message is shown.
+An interactive TradingView chart for the ticker symbol.
+Requires an internet connection to load.
 
-### CSV Upload
-Create a plain `.csv` file with one company name or ticker per row (no headers please):
+### CSV Batch Search
+Create a plain `.csv` file with one company name or ticker
+per row (no header row needed):
 
 ```
-company
 PFE
 MRNA
 Regeneron
 Bristol-Myers Squibb
 ```
 
-Upload it using the yellow card (top-right of the page). The app
-returns results for each entry, collapsible by company.
+Upload it using the yellow card in the top-right corner of
+the app. Results are returned for each entry, collapsible
+by company.
 
-**Limits:** 50 rows maximum, 1 MB maximum file size, UTF-8 encoding.
+**Limits:** 50 rows maximum, 1 MB file size, UTF-8 encoding.
 
 ---
 
-## If Something Goes Wrong
+## Troubleshooting
 
 | Symptom | What to check |
 |---|---|
-| Browser says "site cannot be reached" | Make sure the launcher window is still open |
-| Launcher window closed immediately | Open `logs/launch.log` for the error
-(Notepad on Windows, TextEdit on Mac) |
-| "Virtual environment not found" message | See First-Time Setup below
-for your OS |
-| No results returned | Try a longer timeframe (Past Month), or check your internet connection |
-| Press releases empty | Some companies publish infrequently; try Past Month |
-| Stock chart blank or not loading | Ticker not resolved — try the exact ticker symbol (e.g. NVO, PFE); the chart requires an internet connection to load |
-| Mac: `launch_macos.sh` opens in a text editor | Right-click → Open With → Terminal |
-| Mac: "permission denied" when running the script | Run `chmod +x launch_macos.sh` in Terminal first |
+| Browser says "site cannot be reached" | The launcher window may have been closed — reopen the app |
+| No results returned | Check your internet connection; try **Past Month** for less active companies |
+| Press releases are empty | Some companies publish infrequently — try **Past Month** |
+| Stock chart blank | Try the exact ticker symbol (e.g. `NVO`, `PFE`) — the chart needs internet |
+| Windows SmartScreen warning | Click **More info** → **Run anyway** |
+| Mac Gatekeeper warning | Right-click the app → **Open** → **Open** |
 
-### Reading the log file
+### Finding the log file (advanced)
 
-If the app fails to start, open `logs/launch.log`.
+If the app fails to start entirely, a log file records the
+exact error.
 
-- **Windows:** right-click the file → Open With → Notepad
-- **Mac:** double-click the file, or run `open logs/launch.log` in Terminal
-
-The last few lines will show the specific error.
-
----
-
-## First-Time Setup
-
-### Windows First-Time Setup
-
-This is only needed once.
-If `Launch Industry News.bat` already works, skip this.
-
-1. Open a terminal (search "cmd" in the Windows Start menu).
-2. Navigate to the project folder:
-   ```
-   cd "path\to\Industry-News-MVP"
-   ```
-3. Create the virtual environment and install dependencies:
-   ```
-   python -m venv .venv
-   .venv\Scripts\python.exe -m pip install -r requirements.txt
-   ```
-4. Close the terminal. Double-click `Launch Industry News.bat`.
+- **Windows:** open
+  `C:\Users\YourName\AppData\Local\Programs\Industry News\logs\launch.log`
+  in Notepad
+- **Mac:** in Finder press **Cmd+Shift+G**, paste
+  `/Applications/IndustryNews.app/Contents/MacOS/logs/`
+  and open `launch.log`
 
 ---
 
-### Mac First-Time Setup
+## Stopping the App
 
-This is only needed once. If `launch_macos.sh` already works, skip this.
+Close the launcher window, or press `Ctrl+C` inside it.
+The browser tab stays open but shows "connection refused"
+until the app is restarted.
 
-**Step 1 — Check that Python 3 is installed.**
+---
+---
 
-Open Terminal (Spotlight → type "Terminal") and run:
+## For Developers
 
-```
-python3 --version
-```
+Everything below this line is for people who want to run the
+app from source code, contribute, or build their own
+installers.
 
-If you see `Python 3.x.x`, you're good. If you get "command not found",
-install Python from [python.org/downloads](https://www.python.org/downloads/)
-and reopen Terminal.
+---
 
-**Step 2 — Navigate to the project folder.**
+### Running from Source
 
-```
-cd path/to/Industry-News-MVP
-```
+#### Prerequisites
+- Python 3.10 or later
+- Git
 
-Replace `path/to/Industry-News-MVP` with the actual location, for example:
-
-```
-cd ~/Downloads/Industry-News-MVP
-```
-
-**Step 3 — Create the virtual environment and install dependencies.**
+#### Windows — First-Time Setup
 
 ```
+git clone https://github.com/andrewvtaibi/Industry-News-MVP.git
+cd Industry-News-MVP
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Then launch with:
+
+```
+"Launch Industry News.bat"
+```
+
+#### Mac — First-Time Setup
+
+```bash
+git clone https://github.com/YOUR_USERNAME/Industry-News-MVP.git
+cd Industry-News-MVP
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
-```
-
-**Step 4 — Make the launch script executable (one time only).**
-
-```
 chmod +x launch_macos.sh
-```
-
-**Step 5 — Launch the app.**
-
-```
 ./launch_macos.sh
 ```
 
-Or double-click `launch_macos.sh` in Finder (right-click → Open With →
-Terminal if it doesn't open automatically).
-
 ---
 
-## Running the Tests
-
-Open a terminal in the project folder, then run:
+### Running the Tests
 
 **Windows:**
 ```
@@ -202,91 +192,96 @@ To also run live network tests (requires internet):
 .venv/bin/python3 -m pytest tests/test_integration.py -v
 ```
 
-Expected output: **10 passed** (real RSS feeds).
+Expected output: **10 passed**.
 
 ---
 
-## Stopping the App
+### Automated Builds via GitHub Actions
 
-Close the launcher window, or press `Ctrl+C` inside it.
-The browser tab will remain open but will show "connection refused"
-until the server is restarted.
+Pushing a version tag triggers the build pipeline automatically.
+GitHub's cloud machines build both installers — no Mac hardware
+needed.
+
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+GitHub then:
+1. Builds `IndustryNews-Setup-v1.0.1.exe` on a Windows runner
+2. Builds `IndustryNews-v1.0.1.dmg` on a macOS runner
+3. Attaches both files to a new GitHub Release
+
+Users download directly from the **Releases** page — no
+terminal or technical knowledge required.
 
 ---
 
-## Building a Windows Installer (Developer)
+### Building Installers Locally
 
-This produces a single `IndustryNews-Setup.exe` that users download
-and double-click — no Python or Git required on their machine.
-
-### Step 1 — Install build tools (one time)
+#### Windows installer (requires Inno Setup 6)
 
 ```
 pip install pyinstaller
-```
-
-Download and install
-[Inno Setup 6](https://jrsoftware.org/isinfo.php) (free).
-
-### Step 2 — Bundle the app with PyInstaller
-
-Run from the project root with the venv active:
-
-```
 pyinstaller industry_news.spec
-```
-
-Output: `dist\IndustryNews\` (a self-contained folder with Python
-bundled in).
-
-### Step 3 — Build the installer with Inno Setup
-
-Open `installer\industry_news.iss` in the Inno Setup IDE and
-click **Build**, or run from the command line:
-
-```
 iscc installer\industry_news.iss
 ```
 
 Output: `installer\Output\IndustryNews-Setup.exe`
 
-### Step 4 — Publish to GitHub Releases
+#### macOS DMG (requires a Mac)
 
-1. Go to your repo → **Releases** → **Draft a new release**
-2. Tag it (e.g. `v1.0.0`)
-3. Upload `IndustryNews-Setup.exe`
-4. Publish
+```bash
+pip install pyinstaller
+pyinstaller industry_news_mac.spec
+brew install create-dmg
+create-dmg \
+  --volname "Industry News" \
+  --window-pos 200 120 \
+  --window-size 600 400 \
+  --icon-size 100 \
+  --icon "IndustryNews.app" 175 190 \
+  --hide-extension "IndustryNews.app" \
+  --app-drop-link 425 185 \
+  "IndustryNews.dmg" \
+  "dist/IndustryNews.app"
+```
 
-Users then download a single file and run a standard install wizard
-that optionally creates a desktop shortcut.
+Output: `IndustryNews.dmg`
 
 ---
 
-## Project Structure (Reference)
+### Project Structure
 
 ```
 Industry-News-MVP/
-  Launch Industry News.bat  <- double-click to start (Windows)
-  launch_macos.sh           <- double-click to start (Mac)
-  launch.py                 <- launcher logic (cross-platform)
-  industry_news.spec        <- PyInstaller build spec
+  Launch Industry News.bat  <- Windows launcher (source run)
+  launch_macos.sh           <- Mac launcher (source run)
+  launch.py                 <- cross-platform launcher logic
+  industry_news.spec        <- PyInstaller spec (Windows)
+  industry_news_mac.spec    <- PyInstaller spec (macOS)
   installer/
-    industry_news.iss       <- Inno Setup installer script
-    Output/                 <- built installer goes here
+    industry_news.iss       <- Inno Setup script (Windows .exe)
+    Output/                 <- built Windows installer
+  .github/
+    workflows/
+      build-release.yml     <- automated build + release pipeline
   server/                   <- FastAPI backend
-  static/                   <- HTML/CSS/JS frontend
+  static/                   <- HTML / CSS / JS frontend
   data/tickers.json         <- ticker symbol lookup table
   tests/                    <- automated test suite
   logs/launch.log           <- startup log (check here on errors)
-  app/                      <- original CLI aggregator (unchanged)
+  app/                      <- RSS fetch utilities
 ```
 
 ---
 
-## Security Notes
+### Security Notes
 
-- All user input is sanitized before use (XSS and injection protected).
+- All user input is sanitized before use (XSS and injection
+  protected).
 - Rate limiting: 30 searches per minute per IP address.
 - CSV uploads: validated for size, row count, and encoding.
-- No user data is stored or transmitted beyond fetching public RSS feeds.
+- No user data is stored or transmitted beyond fetching public
+  RSS feeds.
 - Error messages never expose internal server details.

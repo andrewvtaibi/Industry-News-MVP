@@ -1,8 +1,13 @@
 # Industry News — Company Reports and Information Engine
 
-Search any company or stock ticker and instantly get recent
+Search any single or batch of companies and instantly get recent
 headlines, official press releases, and an interactive stock
-chart — all in one place, free.
+charts — all in one place, completely free.
+
+From the creator: I have CSV files containing lists of companies
+I batch search daily or weekly covering industry sectors that
+interest me for various reasons (professional, personal finance, 
+market research, etc). 
 
 ---
 

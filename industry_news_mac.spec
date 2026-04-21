@@ -34,6 +34,12 @@ a = Analysis(
         "feedparser",
         "pydantic",
         "pydantic.deprecated.class_validators",
+
+        # certifi provides the CA cert bundle used by launch.py to
+        # configure SSL_CERT_FILE. Without this, all HTTPS fetches
+        # (Google News RSS, press-release feeds) fail silently in the
+        # frozen .app bundle.
+        "certifi",
     ],
     hookspath=[],
     hooksconfig={},

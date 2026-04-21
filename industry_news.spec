@@ -61,6 +61,10 @@ a = Analysis(
         "feedparser",
         "pydantic",
         "pydantic.deprecated.class_validators",
+
+        # certifi provides the CA cert bundle used by launch.py to
+        # configure SSL_CERT_FILE for outbound HTTPS requests.
+        "certifi",
     ],
     hookspath=[],
     hooksconfig={},

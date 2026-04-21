@@ -16,6 +16,11 @@ httpx>=0.27.0
 # Rate limiting for FastAPI
 slowapi>=0.1.9
 
+# CA certificate bundle — required by the frozen PyInstaller build on
+# macOS so that outbound HTTPS requests (RSS feeds, etc.) can verify
+# server certificates.
+certifi>=2024.2.2
+
 # Test framework
 pytest>=8.0.0
 pytest-asyncio>=0.23.0

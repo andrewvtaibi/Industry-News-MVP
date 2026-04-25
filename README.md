@@ -274,3 +274,13 @@ Industry-News-MVP/
 - No user data is stored or transmitted beyond fetching public
   RSS feeds.
 - Error messages never expose internal server details.
+
+---
+
+## License
+
+This project is licensed under the
+[PolyForm Noncommercial License 1.0.0](LICENSE).
+
+Free for personal, educational, and non-commercial use.
+**Commercial use of any kind is prohibited.**

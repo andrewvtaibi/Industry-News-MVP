@@ -32,6 +32,9 @@ _DATA_FILE = Path(__file__).resolve().parents[2] / "data" / "tickers.json"
 # periods). Anything else indicates noise / injection attempt.
 _CLEAN_PATTERN = re.compile(r"^[A-Za-z0-9 &\-\.]+$")
 
+# Matches a bare ticker symbol: 1–5 uppercase letters only.
+_TICKER_FORMAT = re.compile(r"^[A-Z]{1,5}$")
+
 
 class TickerService:
     """
@@ -105,6 +108,13 @@ class TickerService:
                 return ResolvedCompany(
                     ticker=ticker, company_name=name, found=True
                 )
+
+        # Passthrough: input looks like a valid ticker symbol but isn't in
+        # the local hint map. Let TradingView attempt to resolve it.
+        if _TICKER_FORMAT.match(upper_q):
+            return ResolvedCompany(
+                ticker=upper_q, company_name=upper_q, found=False
+            )
 
         return ResolvedCompany(ticker=None, company_name=q, found=False)
 

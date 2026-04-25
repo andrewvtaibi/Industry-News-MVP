@@ -1,6 +1,6 @@
-# Dockerfile for the BioNews webapp
-# Build: docker build -t bionews .
-# Run:   docker run -p 8000:8000 bionews
+# Dockerfile for the Industry News webapp
+# Build: docker build -t industry-news .
+# Run:   docker run -p 8000:8000 industry-news
 
 FROM python:3.11-slim
 

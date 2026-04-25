@@ -1,6 +1,6 @@
 /**
  * static/js/app.js
- * Client-side logic for the BioNews webapp.
+ * Client-side logic for the Industry News webapp.
  *
  * Responsibilities:
  *   - Read active toggle state (timeframe, content type)
@@ -340,12 +340,17 @@ function renderStockWidget(data) {
   const name = escHtml(data.resolved.company_name || data.query);
 
   if (!ticker) {
+    const looksLikeTicker = /^[A-Z]{1,5}$/.test(
+      data.resolved.company_name || data.query
+    );
+    const msg = looksLikeTicker
+      ? `Ticker <strong>${name}</strong> was not recognized.
+         Please verify the symbol.`
+      : `Private company — no public stock widget available
+         for "<strong>${name}</strong>".`;
     wrap.innerHTML = `
       <div class="stock-widget-header">${name}</div>
-      <p class="stock-no-ticker">
-        No ticker symbol found for "<strong>${name}</strong>".
-        Try searching by the exact ticker (e.g. PFE, MRNA).
-      </p>
+      <p class="stock-no-ticker">${msg}</p>
     `;
     resultsArea.appendChild(wrap);
     return;
@@ -389,8 +394,14 @@ function makeStockSection(data) {
   body.className = 'company-body';
 
   if (!ticker) {
-    body.innerHTML = `<p class="no-items-msg">
-      No ticker symbol found. Try using the exact ticker abbreviation.</p>`;
+    const looksLikeTicker = /^[A-Z]{1,5}$/.test(
+      data.resolved.company_name || data.query
+    );
+    const msg = looksLikeTicker
+      ? `Ticker <strong>${name}</strong> was not recognized.
+         Please verify the symbol.`
+      : 'Private company — no public stock widget available.';
+    body.innerHTML = `<p class="no-items-msg">${msg}</p>`;
   } else {
     const containerId = `tv-batch-${escAttr(ticker)}-${Date.now()}`;
     body.innerHTML = `

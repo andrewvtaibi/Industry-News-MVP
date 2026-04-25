@@ -81,10 +81,10 @@ Create a plain `.csv` file with one company name or ticker
 per row (no header row needed):
 
 ```
-PFE
-MRNA
-Regeneron
-Bristol-Myers Squibb
+MSFT
+AMZN
+LMT
+Pfizer
 ```
 
 Upload it using the yellow card in the top-right corner of
@@ -102,7 +102,7 @@ by company.
 | Browser says "site cannot be reached" | The launcher window may have been closed — reopen the app |
 | No results returned | Check your internet connection; try **Past Month** for less active companies |
 | Press releases are empty | Some companies publish infrequently — try **Past Month** |
-| Stock chart blank | Try the exact ticker symbol (e.g. `NVO`, `PFE`) — the chart needs internet |
+| Stock chart blank | Try the exact ticker symbol (e.g. `MSFT`, `LMT`) — the chart needs internet |
 | Windows SmartScreen warning | Click **More info** → **Run anyway** |
 | Mac Gatekeeper warning | Right-click the app → **Open** → **Open** |
 

@@ -218,36 +218,70 @@ body {
   background: var(--yellow-card-bg);
   border: 2px solid var(--yellow-card-brd);
   border-radius: var(--radius);
-  padding: 16px 18px;
+  padding: 14px 16px;
   text-align: center;
-  min-width: 160px;
-  max-width: 200px;
+  min-width: 180px;
+  max-width: 230px;
   box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: background 0.15s;
-  position: relative;
 }
 
-.csv-card:hover {
-  background: #f0d800;
-}
-
-.csv-card p {
+.csv-card-label {
   font-size: 13px;
+  font-weight: 700;
   color: #5d4e00;
-  font-weight: 600;
-  line-height: 1.4;
+  margin-bottom: 8px;
   pointer-events: none;
 }
 
-.csv-card .csv-arrow {
-  display: block;
-  font-size: 20px;
-  margin-top: 6px;
-  pointer-events: none;
+/* ---- Drop zone ---- */
+.csv-drop-zone {
+  border: 2.5px dashed var(--yellow-card-brd);
+  border-radius: 8px;
+  padding: 18px 10px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.csv-card input[type="file"] {
+.csv-drop-zone:hover {
+  border-color: var(--accent-blue);
+  background: rgba(31, 97, 141, 0.07);
+}
+
+.csv-drop-zone.drag-over {
+  border-color: var(--accent-blue);
+  border-style: solid;
+  background: rgba(31, 97, 141, 0.13);
+}
+
+.csv-drop-icon {
+  font-size: 26px;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.csv-drop-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5d4e00;
+  line-height: 1.5;
+  text-align: center;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.csv-drop-subtext {
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.csv-drop-zone input[type="file"] {
   position: absolute;
   inset: 0;
   opacity: 0;
@@ -256,11 +290,13 @@ body {
   height: 100%;
 }
 
+/* ---- Filename + submit ---- */
 .csv-filename {
   font-size: 11px;
   color: #3d3300;
-  margin-top: 6px;
+  margin-top: 8px;
   word-break: break-all;
+  min-height: 0;
 }
 
 .csv-submit-btn {
@@ -276,8 +312,6 @@ body {
   cursor: pointer;
   transition: background 0.15s;
   display: none;
-  position: relative;
-  z-index: 1;
 }
 
 .csv-submit-btn.visible {
@@ -534,9 +568,12 @@ body {
 
   .csv-card {
     max-width: 100%;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  }
+
+  .csv-drop-zone {
+    flex-direction: row;
+    padding: 12px 14px;
+    justify-content: center;
+    gap: 10px;
   }
 }

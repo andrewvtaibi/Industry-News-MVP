@@ -46,7 +46,7 @@ const state = {
 
 let searchInput, searchBtn;
 let timeframeBtns, contentTypeBtns;
-let csvInput, csvFilename, csvSubmitBtn;
+let csvDropZone, csvInput, csvFilename, csvSubmitBtn;
 let statusBar, statusMsg, errorBanner, noResults, resultsArea;
 
 // ---------------------------------------------------------------------------
@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   searchBtn      = document.getElementById('search-btn');
   timeframeBtns  = document.querySelectorAll('.timeframe-btn');
   contentTypeBtns = document.querySelectorAll('.content-type-btn');
+  csvDropZone    = document.getElementById('csv-drop-zone');
   csvInput       = document.getElementById('csv-input');
   csvFilename    = document.getElementById('csv-filename');
   csvSubmitBtn   = document.getElementById('csv-submit-btn');
@@ -97,15 +98,48 @@ document.addEventListener('DOMContentLoaded', () => {
   // Search button
   searchBtn.addEventListener('click', doSearch);
 
-  // CSV file selection
+  // CSV file selection via click-to-browse
   csvInput.addEventListener('change', () => {
     const f = csvInput.files && csvInput.files[0];
-    if (f) {
-      state.csvFile = f;
-      csvFilename.textContent = f.name;
-      csvSubmitBtn.classList.add('visible');
+    if (f) loadCsvFile(f);
+  });
+
+  // CSV drag-and-drop
+  csvDropZone.addEventListener('dragenter', e => {
+    e.preventDefault();
+    csvDropZone.classList.add('drag-over');
+  });
+
+  csvDropZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    csvDropZone.classList.add('drag-over');
+  });
+
+  csvDropZone.addEventListener('dragleave', e => {
+    // Only remove highlight when leaving the zone entirely, not
+    // when crossing into a child element.
+    if (!csvDropZone.contains(e.relatedTarget)) {
+      csvDropZone.classList.remove('drag-over');
     }
   });
+
+  csvDropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    csvDropZone.classList.remove('drag-over');
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!f) return;
+    if (f.type === 'text/csv' || f.name.endsWith('.csv')) {
+      loadCsvFile(f);
+    } else {
+      showError('Please drop a valid .csv file.');
+    }
+  });
+
+  // Prevent the browser from downloading any file dropped
+  // outside the designated drop zone.
+  document.addEventListener('dragover', e => e.preventDefault());
+  document.addEventListener('drop',     e => e.preventDefault());
 
   // CSV submit
   csvSubmitBtn.addEventListener('click', doUpload);
@@ -113,6 +147,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Auto-restore the most recently used CSV (across sessions)
   tryRestoreSavedCsv();
 });
+
+// ---------------------------------------------------------------------------
+// CSV file loader — single entry point for both drop and click-to-browse.
+// Always replaces whatever was previously loaded.
+// ---------------------------------------------------------------------------
+
+function loadCsvFile(f) {
+  state.csvFile = f;
+  csvFilename.textContent = f.name;
+  csvSubmitBtn.classList.add('visible');
+}
 
 // ---------------------------------------------------------------------------
 // CSV persistence

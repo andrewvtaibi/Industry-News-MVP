@@ -121,18 +121,31 @@
       </div><!-- /.search-section -->
 
       <!-- Right: CSV upload card -->
-      <div class="csv-card" role="button" tabindex="0"
-           aria-label="Upload a CSV with company names or ticker symbols">
-        <p>Or upload a CSV with your company names or ticker symbols here</p>
-        <span class="csv-arrow">↓</span>
-        <p id="csv-filename" class="csv-filename"></p>
-        <input
-          id="csv-input"
-          type="file"
-          accept=".csv,text/csv"
-          aria-hidden="true"
-          tabindex="-1"
+      <div class="csv-card">
+        <p class="csv-card-label">Batch CSV Search</p>
+
+        <div
+          id="csv-drop-zone"
+          class="csv-drop-zone"
+          role="button"
+          tabindex="0"
+          aria-label="Drop a CSV file here, or click to browse"
         >
+          <span class="csv-drop-icon" aria-hidden="true">⬇</span>
+          <span class="csv-drop-text">
+            Drop CSV here
+            <span class="csv-drop-subtext">or click to browse</span>
+          </span>
+          <input
+            id="csv-input"
+            type="file"
+            accept=".csv,text/csv"
+            aria-label="Upload CSV file"
+            tabindex="-1"
+          >
+        </div>
+
+        <p id="csv-filename" class="csv-filename"></p>
         <button
           id="csv-submit-btn"
           class="csv-submit-btn"
